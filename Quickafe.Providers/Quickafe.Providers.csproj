@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{30DB7192-0617-4089-9FEB-D30ABF42EA55}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Quickafe.Providers</RootNamespace>
+    <AssemblyName>Quickafe.Providers</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Kendo.Mvc">
+      <HintPath>..\lib\KENDOUIMVC\2016.2.504.545\Kendo.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit.EntityFramework, Version=1.0.3.0, Culture=neutral, PublicKeyToken=b6c8cfc71f7a6a80, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.EntityFramework.1.0.3.0\lib\net46\LinqKit.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="AjaxViewModel.cs" />
+    <Compile Include="AutoNumberProvider.cs" />
+    <Compile Include="ConfigurationKeys.cs" />
+    <Compile Include="ConfigurationProvider.cs" />
+    <Compile Include="ChartProvider.cs" />
+    <Compile Include="QuickafeClaimTypes.cs" />
+    <Compile Include="ReportProvider.cs" />
+    <Compile Include="RoleAccessCacheModel.cs" />
+    <Compile Include="ViewModels\CacheDataModel.cs" />
+    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\Configuration\ConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\Dashboard\MtdOrderVolumeViewModel.cs" />
+    <Compile Include="ViewModels\LandingPageViewModel.cs" />
+    <Compile Include="LoginViewModel.cs" />
+    <Compile Include="LookUpProvider.cs" />
+    <Compile Include="PaymentTypeProvider.cs" />
+    <Compile Include="ProductCategoryProvider.cs" />
+    <Compile Include="ProductProvider.cs" />
+    <Compile Include="QuickafeException.cs" />
+    <Compile Include="TableProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityProvider.cs" />
+    <Compile Include="ViewModels\LookUp\ListLookUpViewModel.cs" />
+    <Compile Include="ViewModels\LookUp\LookUpValuesViewModel.cs" />
+    <Compile Include="ViewModels\MenuAccess\ListMenuViewModel.cs" />
+    <Compile Include="ViewModels\MenuAccess\RoleAccessViewModel.cs" />
+    <Compile Include="ViewModels\PaymentType\CreateEditViewModel.cs" />
+    <Compile Include="ViewModels\PaymentType\IndexViewModel.cs" />
+    <Compile Include="ViewModels\PaymentType\ListPaymentTypeViewModel.cs" />
+    <Compile Include="ViewModels\ProductCategory\CreateEditViewModel.cs" />
+    <Compile Include="ViewModels\ProductCategory\IndexViewModel.cs" />
+    <Compile Include="ViewModels\ProductCategory\ListProductCategoryViewModel.cs" />
+    <Compile Include="ViewModels\Product\CreateEditViewModel.cs" />
+    <Compile Include="ViewModels\Product\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Product\ListProductViewModel.cs" />
+    <Compile Include="ViewModels\Reports\OrderReceiptReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\OrderSummaryViewModel.cs" />
+    <Compile Include="ViewModels\Reports\PaymentByTypeViewModel.cs" />
+    <Compile Include="ViewModels\Reports\PaymentReceiptViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ProductSalesByCategoryViewModel.cs" />
+    <Compile Include="ViewModels\Role\CreateEditViewModel.cs" />
+    <Compile Include="ViewModels\Role\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Role\ListRoleViewModel.cs" />
+    <Compile Include="ViewModels\Table\CreateEditViewModel.cs" />
+    <Compile Include="ViewModels\Table\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Table\ListTableViewModel.cs" />
+    <Compile Include="ViewModels\User\CreateEditViewModel.cs" />
+    <Compile Include="ViewModels\User\IndexViewModel.cs" />
+    <Compile Include="ViewModels\User\UserLoginViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Quickafe.DataAccess\Quickafe.DataAccess.csproj">
+      <Project>{009fff6f-b29b-4508-8ed7-004a0d98c463}</Project>
+      <Name>Quickafe.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Quickafe.Framework\Quickafe.Framework.csproj">
+      <Project>{04967b81-6587-48e9-bfa3-d548f0628dff}</Project>
+      <Name>Quickafe.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Quickafe.Resources\Quickafe.Resources.csproj">
+      <Project>{ff5b2943-be39-4b07-865c-de3864d784ba}</Project>
+      <Name>Quickafe.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

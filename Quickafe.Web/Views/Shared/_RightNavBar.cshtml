@@ -1,0 +1,18 @@
+﻿@{ 
+    var owinContext = HttpContext.Current.GetOwinContext();
+    var userName = owinContext.Authentication.User.Identity.Name;
+}
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="#">@DateTime.Today.ToString("dddd, dd MMM yyyy")</a></li>
+    @*<li><a href="../navbar-static-top/">Static top</a></li>
+    <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>*@
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user"></i> @userName <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="@Url.Action("ChangePassword", "Home", new { area = String.Empty })"><i class="fa fa-key"></i> Change Password</a></li>
+            <li><a href="@Url.Action("Logout", "Home", new { area = String.Empty })" id="logout"><i class="fa fa-power-off"></i> Log out</a></li>
+            <li class="nav-divider"></li>
+            <li><a href="#" id="aboutMenu" data-abouturl="@Url.Action("About", "Home", new { area = String.Empty } )"><i class="fa fa-info-circle"></i> About</a></li>
+        </ul>
+    </li>
+</ul>

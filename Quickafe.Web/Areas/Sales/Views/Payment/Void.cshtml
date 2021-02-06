@@ -1,0 +1,23 @@
+﻿<div style="width:420px;padding-top:20px;">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-3">User Name: </div>
+            <div class="col-sm-7">@Html.Kendo().TextBox().Name("UserName")</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3">Password: </div>
+            <div class="col-sm-7">@Html.Kendo().TextBox().Name("Password")</div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-7">
+                <button id="btnVoidAuth" class="k-button">Authenticate</button>
+                <button id="btnClose" class="k-button">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="VoidUrl" value="@ViewBag.VoidUrl" />
+<input type="hidden" id="VoidPaymentId" value="@ViewBag.VoidPaymentId" />
+<input type="hidden" id="VoidAuthenticationUrl" value="@ViewBag.VoidAuthenticationUrl"/>

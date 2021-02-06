@@ -1,0 +1,23 @@
+﻿@model Quickafe.Providers.ViewModels.LookUp.IndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-title">Look Up</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @(Html.Kendo().Grid(Model.List).Name("grid").HtmlAttributes(new { data_editurl = Url.Action("Edit") }).EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                  col.Bound(m => m).Title("Name");
+                  col.Template(@<text><a href="@Url.Action("Edit", new { name = item })" class="k-button k-button-icon"><i class="fa fa-edit"></i></a></text>).ClientTemplate("<a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon editRow'><i class='fa fa-edit'></i></a>").Width(50).Title("");
+                  })
+                .Mobile()
+                .Excel(xls => xls.AllPages(true))
+                .DataSource(ds => ds.Server())
+            )
+        }
+    </div>
+</div>

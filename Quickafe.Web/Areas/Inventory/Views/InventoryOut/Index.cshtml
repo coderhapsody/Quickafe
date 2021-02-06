@@ -1,0 +1,45 @@
+﻿@model Quickafe.Providers.Inventory.ViewModels.InventoryOut.IndexViewModel
+
+<div class="page-title">Inventory Out</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            <p>
+                <a href="@Url.Action("Create")" class="k-button k-button-icon" id="btnAddNew" data-createurl="@Url.Action("Create")"><span class="fa fa-plus"></span> Add New</a>
+                <a href="#" class="k-button k-button-icon" id="btnPosting" data-postingurl="@Url.Action("Posting")"><span class="fa fa-chain"></span> Post</a>
+            </p>
+            @(Html.Kendo().Grid(Model.List)
+                .Name("grid")
+                .HtmlAttributes(new { data_editurl = Url.Action("Edit") })
+                .EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                      col.Template(@<text></text>).ClientTemplate(@"<input type='checkbox' id='chkDelete' name='chkDelete' value='#=Id#' />")
+                              .Width(30).HtmlAttributes(new { style = "text-align:center;" });
+                      col.Bound(m => m.InventoryNo).Title("Inventory No.");
+                      col.Bound(m => m.InventoryDate).Title("Inventory Date").Format("{0:dd/MM/yyyy}");
+                      col.Bound(m => m.InventoryType).Title("Inventory Type");
+                      col.Bound(m => m.MutationType).Title("Mutation Type");
+                      col.Bound(m => m.PostedWhen).Title("Posted Date").Format("{0:dd/MM/yyyy}");
+                      col.Template(@<text></text>).ClientTemplate(@"<a data-id='#=Id#' href='" + Url.Action("Edit", new { id = "#=Id#" }) + "' class='k-button k-button-icon editRow'><i class='fa fa-edit'></i></a>").Width(50).Title("");
+                  })
+                .Mobile()
+                .Filterable()
+                .Pageable()
+                .DataSource(ds => ds.Ajax()
+                                    .Sort(m => m.Add("InventoryDate").Descending())
+                                    .Sort(m => m.Add("InventoryNo").Descending())
+                                    .Read("ListInventoryOut", "InventoryOut", new { area = "Inventory" }))
+                .Sortable(s => s.SortMode(GridSortMode.MultipleColumn))
+            )
+
+
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/modules/inventory/InventoryOut.js"></script>
+}

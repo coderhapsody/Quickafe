@@ -1,0 +1,105 @@
+﻿<#@ template language="C#" debug="true" hostspecific="True"#>
+<#@ include file="SaveOutput.ttinclude"#>
+<#@ assembly name="$(SolutionDir)packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll" #>
+<#@ assembly name="Microsoft.SqlServer.Smo" #>
+<#@ assembly name="Microsoft.SqlServer.ConnectionInfo" #>
+<#@ assembly name="Microsoft.SqlServer.Management.Sdk.Sfc" #>
+<#@ import namespace="System.Data.Entity.Infrastructure.Pluralization" #>
+<#@ import namespace="Microsoft.SqlServer.Management.Smo" #>
+<# 
+	var pluralizationService = new EnglishPluralizationService();
+	string sqlServer = "localhost";
+	string sqlLogin = "sa";
+	string sqlPassword = "sa123";
+	string sqlDatabase = "quickafe";
+	string classNamespace = "Quickafe.Providers";
+	string interfaceEFContext = "IQuickafeDbContext";
+	string destinationFolder = "PocoFolder";
+ 
+	Server server = new Server(sqlServer);
+	server.ConnectionContext.LoginSecure = false;
+	server.ConnectionContext.Login = sqlLogin;
+	server.ConnectionContext.Password = sqlPassword;
+	server.ConnectionContext.Connect();
+
+	var db = server.Databases[sqlDatabase];
+	var tables = db.Tables;
+
+	foreach(Table table in tables) {
+		GenerateFile(classNamespace, interfaceEFContext, table, pluralizationService);
+
+		string fileName = table.Name + "Provider.cs";
+		SaveOutput(fileName);
+	}
+#> 
+<#+	
+    void GenerateFile(string classNamespace, string interfaceEFContext, Table table, IPluralizationService pluralizationService)
+    {
+		var entityName = table.Name;
+		var pluralName = pluralizationService.Pluralize(table.Name);
+		var objectName = ToCamelCase(table.Name);		
+		var pluralLoweredName = pluralName.ToLowerInvariant();
+#>
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using Quickafe.DataAccess;
+using Quickafe.Framework.Base;
+
+namespace <#=classNamespace#> 
+{
+	public class <#=entityName#>Provider : BaseProvider
+	{
+		public <#=entityName#>Provider(<#=interfaceEFContext#> context) : base(context)
+        {
+        }
+
+        public void Add<#=entityName#>(<#=entityName#> <#=objectName#>)
+        {
+            DataContext.<#=pluralName#>.Add(<#=objectName#>);
+            SetAuditFields(<#=objectName#>);
+            DataContext.SaveChanges();
+        }
+
+        public void Update<#=entityName#>(<#=entityName#> <#=objectName#>)
+        {
+            DataContext.<#=pluralName#>.Attach(<#=objectName#>);
+            DataContext.Entry(<#=objectName#>).State = EntityState.Modified;
+            SetAuditFields(<#=objectName#>);
+            DataContext.SaveChanges();
+        }
+
+        public void Delete<#=entityName#>(long <#=objectName#>Id)
+        {
+            <#=entityName#> <#=objectName#> = Get<#=entityName#>(<#=objectName#>Id);
+            DataContext.<#=pluralName#>.Remove(<#=objectName#>);
+            DataContext.SaveChanges();
+        }
+
+        public void Delete<#=entityName#>(long[] array<#=entityName#>Id)
+        {
+            IEnumerable<<#=entityName#>> <#=pluralLoweredName#> = DataContext.<#=pluralName#>.Where(it => array<#=entityName#>Id.Contains(it.Id)).ToList();
+            DataContext.<#=pluralName#>.RemoveRange(<#=pluralLoweredName#>);
+            DataContext.SaveChanges();
+        }
+
+        public <#=entityName#> Get<#=entityName#>(long <#=objectName#>Id)
+        {
+            return DataContext.<#=pluralName#>.Single(entity => entity.Id == <#=objectName#>Id);
+        }
+
+        public IEnumerable<<#=entityName#>> Get<#=pluralName#>(bool onlyActive = true)
+        {
+            IQueryable<<#=entityName#>> query = DataContext.<#=pluralName#>;
+
+            if (onlyActive)
+                query = query.Where(it => it.IsActive);
+
+            return query.ToList();
+        }
+	}
+}
+<#+
+    }  
+#>

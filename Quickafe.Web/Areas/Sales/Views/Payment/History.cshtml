@@ -1,0 +1,66 @@
+﻿@model Quickafe.Providers.Sales.ViewModels.Payment.HistoryViewModel
+
+<div class="page-title">Payment History</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formPayment", name = "formPayment" }))
+        {
+            @Html.ValidationSummary()
+            @(Html.Kendo().Grid(Model.List)
+                    .Name("grid")
+                    .HtmlAttributes(new { data_editurl = Url.Action("Edit") })
+                    .Columns(
+                      col =>
+                      {
+                      col.Bound(m => m.PaymentNo).Title("Payment No.");
+                      col.Bound(m => m.PaymentDate).Title("Payment Date").Format("{0:dd/MM/yyyy}");
+                      col.Bound(m => m.OrderNo).Title("Order No.");
+                      col.Bound(m => m.OrderType).Title("Order Type");
+                      col.Bound(m => m.BillableAmount).Title("Billed Amount").Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                      col.Template(@<text></text>).Title("Payment Types").ClientTemplate(@"<div id='paymenttype-#=Id#'></div>");
+                      col.Bound(m => m.PaidAmount).Title("Paid Amount").Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                      col.Template(@<text></text>).ClientTemplate(
+                        @"<a data-id='#=Id#' href='" + Url.Action("Detail", new { id = "#=Id#", mode = Quickafe.Framework.Helpers.StringHelper.XorString("history") }) + "' class='k-button k-button-icon' title='Detail'><i class='glyphicon glyphicon-zoom-in'></i></a>" +
+                            @"<a data-orderid='#=OrderId#' data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon printPayment' title='Print Payment'><i class='fa fa-print'></i></a>" +
+                            @"<a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon voidPayment' data-voidurl='" + Url.Action("Void", new { id = "#=Id#" }) + "' title='Void Payment'><i class='fa fa-trash'></i></a>"
+                        ).Width(115);
+                      })
+                    .Mobile()
+                    .Events(ev => ev.DataBound("paymentHistory_onDataBound"))
+                    .Pageable()
+                    .Filterable()
+                    .DataSource(ds => ds.Ajax().Read("ListHistory", "Payment", new { area = "Sales" }))
+                .Sortable(s => s.SortMode(GridSortMode.MultipleColumn))
+            )
+        }
+    </div>
+</div>
+<div id="voidAuthentication"></div>
+
+<script>
+    function paymentHistory_onDataBound(e) {
+        var data = this.dataSource.data();
+        $(data).each(function (index, row) {
+            var _id = row.Id;
+            $.ajax({
+                url: "@Url.Action("GetPaymentTypes")",                
+                data: {
+                    id: _id
+                },
+                method: "GET",
+                async: false,
+                success: function (result) {
+                    $("#paymenttype-" + _id).text(result);
+                },
+                error: function (err) {
+                    $("#paymenttype-" + _id).text(err);
+                }
+            });
+            debugger;
+        });
+    }
+</script>
+
+@section scripts{
+    <script src="~/Scripts/modules/sales/PaymentDetail.js"></script>
+}

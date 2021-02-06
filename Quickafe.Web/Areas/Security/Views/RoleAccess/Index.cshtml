@@ -1,0 +1,99 @@
+﻿<div class="page-title">Role Access</div>
+<div class="row">
+    <div class="col-md-4">
+        @(Html.Kendo().TreeView()
+              .Name("treeMenus")
+              .DataTextField("Name")
+              .LoadOnDemand(true)
+              .Events(ev => ev.Select("treeMenus.onSelected"))
+              .DataSource(dataSource => dataSource
+                  .Read(read => read
+                      .Action("ListMenus", "RoleAccess", new { area = "Security" })
+                  )
+              )
+        )
+    </div>
+
+    <div class="col-md-8">
+        <input type="hidden" id="menuId" name="menuId" />
+        <strong id="menuName"></strong>
+        <br />
+        <table id="tblRoles" class="table"></table>
+
+        <div class="col-md-12">
+            <button type="submit" id="btnSave" name="btnSave" class="k-button k-button-icon"><i class="fa fa-save"></i> @Strings.SaveButtonText</button>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        var treeMenus = (function ($) {
+
+            return {
+                onSelected: function (e) {
+                    e.preventDefault();
+                    var that = this;
+                    var nodeId = $("#treeMenus").data("kendoTreeView").dataItem(e.node).id;
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("GetRolesOfMenu")",
+                        data: {
+                            menuId: nodeId
+                        },
+                        success: function (result) {
+                            $("#tblRoles").empty();
+                            $("#btnSave").show();
+                            $("#menuName").text(that.text(e.node));
+                            var html = "";
+                            $.each(result, function (index, el) {
+                                $("#menuId").val(el.MenuId);
+
+                                html += "<tr>";
+                                html += "<td><input type='checkbox' class='chkRole' data-id='" + el.RoleId + "' " + (el.IsAllowed ? "checked='checked'" : "") + " /> " + el.RoleName + "</td>";
+                                html += "</tr>";
+                            });
+                            $(html).appendTo("#tblRoles");
+                        },
+                        error: function (err) {
+                            kendoAlert(err.statusText);
+                        }
+                    });
+                }
+            }
+        })(jQuery);
+
+        $(function () {
+            $("#btnSave").hide();
+            $("#btnSave").click(function (e) {
+                e.preventDefault();
+                var list = [];
+                $(".chkRole").each(function (index, el) {
+                    var roleId = $(el).attr("data-id");
+                    var menuId = $("#menuId").val();
+                    var obj = {
+                        MenuId: menuId,
+                        RoleId: roleId,
+                        IsAllowed: $(el).is(":checked")
+                    };
+                    list.push(obj);
+                });
+                $.ajax({
+                    url: "@Url.Action("Save")",
+                    type: "POST",
+                    data: JSON.stringify(list),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        if (result.IsSuccess) {
+                            bootbox.alert("Access privilege for " + $("#menuName").text() + " has been updated");
+                        }
+                    },
+                    error: function (err) {
+                        kendoAlert(err.statusText);
+                    }
+                });
+            });
+        });
+    </script>
+}

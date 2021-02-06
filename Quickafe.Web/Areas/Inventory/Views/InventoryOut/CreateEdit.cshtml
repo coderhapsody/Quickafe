@@ -1,0 +1,115 @@
+﻿@model Quickafe.Providers.Inventory.ViewModels.InventoryOut.CreateEditViewModel
+
+@{
+    ViewBag.Title = "Create Edit";
+}
+
+<div class="page-title">Inventory Out</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addEditForm", name = "addEditForm" }))
+{
+    @Html.HiddenFor(m => m.Id)
+    @FormHelper.RenderAuditFields(Model)
+    @Html.HiddenFor(m => m.LocationId)
+    @Html.HiddenFor(m => m.Direction)
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-4">@Html.LabelFor(m => m.InventoryNo) </div>
+                    <div class="col-md-7">
+                        @if (Model.InventoryNo != "New")
+                        {
+                            @Html.Kendo().TextBoxFor(m => m.InventoryNo).HtmlAttributes(new { @readonly = "readonly" })
+                        }
+                        else
+                        {
+                            @Html.Kendo().TextBoxFor(m => m.InventoryNo)
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-4">@Html.LabelFor(m => m.InventoryDate)</div>
+                    <div class="col-md-7">
+                        @Html.Kendo().DatePickerFor(m => m.InventoryDate).Min(DateTime.Today.AddDays(-2)).Max(DateTime.Today)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-4">@Html.LabelFor(m => m.InventoryType)</div>
+                    <div class="col-md-7">
+                        @(Html.Kendo().DropDownListFor(m => m.InventoryType).Items(item =>
+                        {
+                            item.Add().Text("Semi Finished Goods").Value("S");
+                            item.Add().Text("Finished Goods").Value("F");
+                        }).OptionLabel("Inventory Type")
+                        )
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-4">@Html.LabelFor(m => m.MutationType)</div>
+                    <div class="col-md-7">
+                        @(Html.Kendo().DropDownListFor(m => m.MutationType)
+                                .DataSource(ds => ds.Read(read => read.Action("GetMutationTypes", "InventoryOut", new { area = "Inventory" })
+                                    .Data("InventoryOutDetail.getInventoryType"))
+                                .ServerFiltering(true))
+                                .CascadeFrom("InventoryType")
+                                .AutoBind(false)
+                                .Enable(false)
+                                .OptionLabel("Select Mutation Type")
+                        )
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-4">@Html.LabelFor(m => m.Notes)</div>
+                    <div class="col-md-7">
+                        @Html.Kendo().EditorFor(m => m.Notes).Tools(tools => tools.Clear()).HtmlAttributes(new { style = "height:50px;" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-7">
+                        <button type="submit" id="btnSave" name="btnSave" data-validateurl="@Url.Action("ValidateInventoryOut")" class="k-button"><i class="fa fa-check"></i>@Strings.SaveButtonText</button>
+                        <a href="@Url.Action("Index")" id="btnClose" name="btnClose" class="k-button"><i class="fa fa-undo"></i>@Strings.CancelButtonText</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <p>
+                <a href="#" class="k-button k-button-icon" id="btnAddNew" data-createurl="@Url.Action("CreateDetail")"><span class="fa fa-plus"></span> Add New</a>
+                <a href="#" class="k-button k-button-icon" id="btnDelete" data-deleteurl="@Url.Action("DeleteDetail")"><span class="fa fa-remove"></span> Delete</a>
+            </p>
+            @(Html.Kendo().Grid(Model.InventoryDetails).Name("grid").HtmlAttributes(new { data_editurl = Url.Action("EditDetail") }).EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                  col.Template(@<text></text>).ClientTemplate(@"<input type='checkbox' id='chkDelete' name='chkDelete' value='#=id#' />")
+                          .Width(30).HtmlAttributes(new { style = "text-align:center;" });
+                  col.Bound(m => m.ProductCode).Title("Product Code");
+                  col.Bound(m => m.ProductName).Title("Product Name");
+                  col.Bound(m => m.Qty).Title("Qty");
+                  col.Bound(m => m.NotesDtl).Title("Notes");
+                  col.Template(@<text></text>).ClientTemplate("<a data-id='#=id#' href='javascript:;;' class='k-button k-button-icon editRow'><i class='fa fa-edit'></i></a>").Width(50).Title("");
+                  })
+                .Mobile()
+                .Pageable()
+                .DataSource(ds => ds.Ajax().Read("GetInventoryOutDetail", "InventoryOut", new { area = "Inventory", inventoryId = Model.Id }))
+                .Sortable(s => s.SortMode(GridSortMode.MultipleColumn))
+            )
+        </div>
+    </div>
+}
+
+<div id="addEditWindow"></div>
+<div id="windowBrowseProduct" data-browseurl="@Url.Action("BrowseProduct", "Browse", new { area = String.Empty, callback = "ProductId;ProductCode;ProductName;UnitPrice" })"></div>
+
+@section scripts{
+    <script src="~/Scripts/modules/inventory/InventoryOutDetail.js"></script>
+}

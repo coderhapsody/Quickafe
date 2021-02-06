@@ -1,0 +1,66 @@
+﻿@model Quickafe.Providers.ViewModels.User.CreateEditViewModel
+
+<div style="width: 550px;">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addEditForm", name = "addEditForm" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+
+        
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.UserName) </div>
+                <div class="col-md-7">
+                    @Html.Kendo().TextBoxFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.Label("Password") </div>
+                <div class="col-md-7">
+                    @Html.Kendo().TextBox().Name("Password").HtmlAttributes(new { type="password", required="required"})                    
+                </div>
+            </div>     
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.RoleId) </div>
+                <div class="col-md-7">
+                    @Html.Kendo().DropDownListFor(m => m.RoleId).DataSource(ds => ds.Read("GetRoles", "User", new { area = "Security"})).DataTextField("Name").DataValueField("Id").OptionLabel("Pilih Grup Pengguna")
+                    @Html.ValidationMessageFor(m => m.RoleId)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-7">
+                    @Html.Kendo().CheckBoxFor(m => m.AllowVoidOrder).Label("Allow Void Order")<br/>
+                    @Html.Kendo().CheckBoxFor(m => m.AllowVoidPayment).Label("Allow Void Payment")<br/>
+                    @Html.Kendo().CheckBoxFor(m => m.AllowPrintReceipt).Label("Allow Print Receipt")
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.IsActive) </div>
+                <div class="col-md-7">
+                    @Html.Kendo().CheckBoxFor(m => m.IsActive)
+                    @Html.ValidationMessageFor(m => m.IsActive)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-7">
+                    <button type="submit" id="btnSave" name="btnSave" class="k-button">Save</button>
+                    <button type="button" id="btnClose" name="btnClose" class="k-button">Close</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("#btnClose").click(UserLogin.closeClick);
+        $("#btnSave").click(UserLogin.saveClick);
+        
+    });
+</script>

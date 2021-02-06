@@ -1,0 +1,185 @@
+﻿@model Quickafe.Providers.ViewModels.Configuration.ConfigurationViewModel
+@{ 
+    var selectItems = Enumerable.Range(1, 10).Select(it => new SelectListItem() { Text = it.ToString(), Value = it.ToString() });   
+}
+
+<div class="page-title">Configuration</div>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "configForm", name = "configForm" }))
+{
+<div class="row">
+    <div id="tabConfig">
+        <ul>
+            <li class="k-state-active">
+                General
+            </li>
+            <li>
+                Order
+            </li>
+            <li>
+                Payment
+            </li>
+            <li>
+                Rates
+            </li>
+            <li>
+                Pricing Modes
+            </li>
+        </ul>
+        <div id="tabGeneral">
+            <div class="row tabcontent">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-4">Store Name</div>
+                            <div class="col-sm-6">@Html.Kendo().TextBoxFor(m => m.StoreName) </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+        <div id="tabOrder">
+            <div class="row tabcontent">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-3">Numbering Length : </div>
+                            <div class="col-sm-6">@Html.Kendo().DropDownListFor(m => m.OrderNumberingLength).BindTo(selectItems).HtmlAttributes(new { style = "width:80px;" })</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">Prefix : </div>
+                            <div class="col-sm-6">@Html.Kendo().TextBoxFor(m => m.OrderPrefix).HtmlAttributes(new { style = "width:80px;" })</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+        <div id="tabPayment">
+            <div class="row tabcontent">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-3">Numbering Length : </div>
+                            <div class="col-sm-6">@Html.Kendo().DropDownListFor(m => m.PaymentNumberingLength).BindTo(selectItems).HtmlAttributes(new { style = "width:80px;" })</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">Prefix : </div>
+                            <div class="col-sm-6">@Html.Kendo().TextBoxFor(m => m.PaymentPrefix).HtmlAttributes(new { style = "width:80px;" })</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+        <div id="tabRates">
+            <div class="row tabcontent">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-3">Tax rate : </div>
+                            <div class="col-sm-6">@Html.Kendo().NumericTextBoxFor(m => m.TaxPercent).Decimals(2).Min(0).Max(100).HtmlAttributes(new { style = "width:80px;" }) %</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">Service charge rate : </div>
+                            <div class="col-sm-6">@Html.Kendo().NumericTextBoxFor(m => m.ServiceChargePercent).Decimals(2).Min(0).Max(100).HtmlAttributes(new { style = "width:80px;" }) %</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+        <div id="tabPricingModes">
+            <div class="row tabcontent">
+                <div class="col-md-6">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-3">Unit Price Label : </div>
+                            <div class="col-sm-6">@Html.Kendo().TextBoxFor(m => m.UnitPriceLabel)</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">Unit Price 2 Label : </div>
+                            <div class="col-sm-6">@Html.Kendo().TextBoxFor(m => m.UnitPrice2Label)</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">Unit Price 3 Label : </div>
+                            <div class="col-sm-6">@Html.Kendo().TextBoxFor(m => m.UnitPrice3Label)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-12">
+        <button type="submit" id="btnSaveConfig" class="k-button k-button-icon"><i class="fa fa-save"></i> Save Configuration</button>
+    </div>
+</div>
+}
+
+<style>
+    .tabcontent {
+        margin-top: 15px;
+        width: 95%;
+        margin-bottom: 10px;
+        min-height: 300px;
+    }
+</style>
+
+@section scripts {
+<script>
+    var Configuration = (function () {
+        var validationOptions = {};
+
+        return {
+            save: function (e) {
+                e.preventDefault();
+
+                var validator = $("#configForm").kendoValidator(validationOptions).getKendoValidator();
+                if (validator.validate()) {
+                    $.ajax({
+                        url: "",
+                        method: "POST",
+                        data:{
+                            OrderNumberingLength: $("#OrderNumberingLength").getKendoDropDownList().value(),
+                            OrderPrefix: $("#OrderPrefix").val(),
+                            PaymentNumberingLength: $("#PaymentNumberingLength").getKendoDropDownList().value(),
+                            PaymentPrefix: $("#PaymentPrefix").val(),
+                            ServiceChargePercent: $("#ServiceChargePercent").getKendoNumericTextBox().value(),
+                            StoreName: $("#StoreName").val(),
+                            TaxPercent: $("#TaxPercent").getKendoNumericTextBox().value(),
+                            UnitPriceLabel: $("#UnitPriceLabel").val(),
+                            UnitPrice2Label: $("#UnitPrice2Label").val(),
+                            UnitPrice3Label: $("#UnitPrice3Label").val()
+                        },
+                        success: function (result) {
+                            if (result.IsSuccess) {
+                                bootbox.alert("Configuration has been updated.");
+                            }
+                        },
+                        error: function (err) {
+                            kendoAlert(err.statusText);
+                        }
+                    });
+                }
+            }
+        }
+    })();
+
+    $(function() {
+        $("#tabConfig").kendoTabStrip({
+            animation: {
+                open: {
+                    effects: "fadeIn"
+                }
+            }
+        });
+
+        $("#btnSaveConfig").click(Configuration.save);
+    });
+</script>
+}

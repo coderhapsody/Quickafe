@@ -1,0 +1,37 @@
+﻿<ul class="nav navbar-nav">   
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Master <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>@Html.ActionLink("Configuration", "Index", "Configuration", new { area = "Master" }, null)</li>
+            <li>@Html.ActionLink("Product", "Index", "Product", new { area = "Master" }, null)</li>
+            <li>@Html.ActionLink("Product Category", "Index", "ProductCategory", new { area = "Master" }, null)</li>         
+            <li>@Html.ActionLink("Payment Type", "Index", "PaymentType", new { area = "Master" }, null)</li>
+            <li>@Html.ActionLink("Table", "Index", "Table", new { area = "Master" }, null)</li>
+            <li>@Html.ActionLink("Look Up", "Index", "LookUp", new { area = "Master" }, null)</li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inventory <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>@Html.ActionLink("Inventory In", "Index", "InventoryIn", new { area = "Inventory" }, null)</li>
+            <li>@Html.ActionLink("Inventory Out", "Index", "InventoryOut", new { area = "Inventory" }, null)</li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sales <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>@Html.ActionLink("Order Entry", "Create", "Order", new { area = "Sales" }, null)</li>
+            <li>@Html.ActionLink("Outstanding Orders", "Index", "Order", new { area = "Sales" }, null)</li>
+            <li>@Html.ActionLink("Order History", "History", "Order", new { area = "Sales" }, null)</li>
+            <li>@Html.ActionLink("Payment History", "History", "Payment", new { area = "Sales" }, null)</li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Security <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            <li>@Html.ActionLink("Roles", "Index", "Role", new { area = "Security" }, null)</li>
+            <li>@Html.ActionLink("Users", "Index", "User", new { area = "Security" }, null)</li>
+            <li>@Html.ActionLink("Role Access", "Index", "RoleAccess", new { area = "Security" }, null)</li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,31 @@
+﻿@model Quickafe.Providers.ViewModels.Role.CreateEditViewModel
+
+<div style="width: 550px;">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addEditForm", name = "addEditForm" }))
+    {        
+        @Html.HiddenFor(m => m.Id)
+        
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-4">@Html.LabelFor(m => m.Name): </div>
+                <div class="col-sm-6">
+                    @Html.Kendo().TextBoxFor(m => m.Name).HtmlAttributes(new { style = "width:300px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-6">
+                    <button type="submit" id="btnSave" name="btnSave" class="k-button"> @Strings.SaveButtonText</button>
+                    <button type="button" id="btnClose" name="btnClose" class="k-button"> @Strings.CloseButtonText</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("#btnClose").click(role.closeClick);
+        $("#btnSave").click(role.saveClick);
+    });
+</script>

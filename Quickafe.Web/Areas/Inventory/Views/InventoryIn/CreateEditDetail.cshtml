@@ -1,0 +1,51 @@
+﻿@model Quickafe.Providers.Inventory.ViewModels.InventoryIn.InventoryDetailEntryViewModel
+
+<div style="width: 570px;">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addEditDetailForm", name = "addEditDetailForm" }))
+    {
+        @Html.HiddenFor(m => m.id)
+        @Html.HiddenFor(m => m.UomId)
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-2">@Html.LabelFor(m => m.ProductCode): </div>
+                <div class="col-md-7">
+                    @Html.HiddenFor(m => m.ProductId)
+                    @Html.Kendo().TextBoxFor(m => m.ProductCode).HtmlAttributes(new { style = "width:100px;" })
+                    <a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon editRow' id="btnBrowseProduct"><i class='fa fa-edit'></i></a>
+                    @Html.Kendo().TextBoxFor(m => m.ProductName).HtmlAttributes(new { style = "width:200px;" , @readonly = "readonly" } )
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">@Html.LabelFor(m => m.Qty)</div>
+                <div class="col-md-7">
+                    @Html.Kendo().NumericTextBoxFor(m => m.Qty).Spinners(true).Step(1).Culture("id-ID").Decimals(0).Format("#")
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2">@Html.LabelFor(m => m.NotesDtl)</div>
+                <div class="col-md-7">
+                    @Html.Kendo().EditorFor(m => m.NotesDtl).Tools(tools => tools.Clear()).HtmlAttributes(new { style = "height:100px;width:340px" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-7">
+                    <button type="submit" id="btnSaveDetail" name="btnSave" class="k-button">@Strings.SaveButtonText</button>
+                    <button type="button" id="btnCloseDetail" name="btnClose" class="k-button">@Strings.CloseButtonText</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(function () {
+        $("#btnCloseDetail").click(InventoryInDetail.closeClick);
+        $("#btnSaveDetail").click(InventoryInDetail.saveClick);
+        $("#Name").focusEnd();
+    });
+
+</script>

@@ -1,0 +1,148 @@
+﻿@model Quickafe.Providers.ViewModels.Role.IndexViewModel
+
+<div class="page-title">Roles</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            <p>
+                <a href="#" class="k-button k-button-icon" id="btnAddNew"><span class="fa fa-plus"></span> Add New</a>
+                <button type="submit" class="k-button" id="btnDelete" name="btnDelete"><span class="fa fa-remove"></span> Delete</button>
+            </p>
+            @(Html.Kendo().Grid(Model.List).Name("grid").EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                      col.Template(@<text></text>).ClientTemplate(@"#if(Id > 1) { #<input type='checkbox' id='chkDelete' name='chkDelete' value='#=Id#' /> #}#")
+                          .Width(50).HtmlAttributes(new { style = "text-align:center;" });
+                      col.Bound(m => m.Name).Title("Role Name");
+                      col.Template(@<text></text>).ClientTemplate("<a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon editRow'><i class='fa fa-edit'></i></a>").Width(50).Title("");
+
+                  })
+                                              .Pageable()
+                                              .Filterable()
+                                              .DataSource(ds => ds.Ajax().Read("List", "Role", new { area = "Security" }))
+                                              .Sortable(s => s.SortMode(GridSortMode.SingleColumn))
+            )
+        }
+    </div>
+
+    <div id="addEditWindow"></div>
+</div>
+
+
+@section scripts {
+    <script>
+        var role = (function ($) {
+            return {
+                windowOptions: {
+                    modal: true,
+                    width: 600,
+                    height: 200,
+                    visible: false,
+                    animation: false,
+                    title: false
+                },
+
+                validatorOptions: {
+                    errorTemplate: Quickafe.errorTemplate,
+                    rules: {
+                        remote: Quickafe.remoteValidationRule
+                    },
+                    messages: {
+                        remote: Quickafe.remoteValidationMessage
+                    }
+                },
+
+                refreshGrid: function () {
+                    $("#grid").data("kendoGrid").dataSource.read();
+                    $("#grid").data("kendoGrid").dataSource.page(1);
+                    $("#grid").data("kendoGrid").refresh();
+                },
+
+                editUrl: "@Url.Action("Edit")",
+                createUrl: "@Url.Action("Create")",
+
+                addNewClick: function (e) {
+                    e.preventDefault();
+                    $("#addEditWindow").html(Quickafe.loadingTemplate);
+                    $("#addEditWindow").data("kendoWindow").refresh({
+                        url: "@Url.Action("Create")"
+                    }).center().open();
+                },
+
+                editClick: function (e) {
+                    e.preventDefault();
+                    $("#addEditWindow").html(Quickafe.loadingTemplate);
+                    $("#addEditWindow").data("kendoWindow").refresh({
+                        url: "@Url.Action("Edit")",
+                        data: {
+                            id: $(e.target).closest("a").attr("data-id")
+                        }
+                    }).center().open();
+                },
+
+                closeClick: function (e) {
+                    e.preventDefault();
+                    $("#addEditWindow").data("kendoWindow").close();
+                },
+
+                deleteClick: function (e) {
+                    e.preventDefault();
+                    var data = [];
+                    $("input[name='chkDelete']:checked").each(function () {
+                        data.push($(this).val());
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Delete")",
+                        data: {
+                            arrayOfId: data
+                        },
+                        traditional: true,
+                        success: function (result) {
+                            if (result.IsSuccess) {
+                                role.refreshGrid();
+                            } else {
+                                alert(result.Message);
+                            }
+                        },
+                        error: function (result) {
+                            alert(result.statusText);
+                        }
+                    });
+                },
+
+                saveClick: function (e) {
+                    e.preventDefault();
+
+                    var validator = $("#addEditForm").kendoValidator(role.validatorOptions).data("kendoValidator");
+                    if (validator.validate()) {
+                        $("#btnSave").addClass("k-state-disabled");
+                        $.ajax({
+                            type: "POST",
+                            url: $("#Id").val() == 0 ? role.createUrl : role.editUrl,
+                            data: $("#addEditForm").serialize(),
+                            success: function (result) {
+                                role.refreshGrid();
+                                $("#addEditWindow").data("kendoWindow").close();
+                            },
+                            error: function (err) {
+                                alert(err.statusText);
+                                $("#btnSave").removeClass("k-state-disabled");
+                            }
+                        });
+                    }
+                }
+
+            }
+        })(jQuery);
+
+        $(function () {
+            $("#addEditWindow").kendoWindow(role.windowOptions);
+            $("#btnAddNew").click(role.addNewClick);
+            $("#btnDelete").click(role.deleteClick);
+            $("#grid").on("click", ".editRow", role.editClick);
+        });
+    </script>
+}

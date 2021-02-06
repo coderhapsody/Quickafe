@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Quickafe.Providers.ViewModels.Product.ListProductViewModel>
+
+
+@(Html.Kendo().Grid<Quickafe.Providers.ViewModels.Product.ListProductViewModel>()
+    .Name("gridBrowse")
+    .EnableCustomBinding(true)
+    .Columns(
+    col =>
+    {
+        col.Template(@<text></text>).ClientTemplate("<a data-return-0='#=Id#' data-return-1='#=Code#' data-return-2='#=Name#' data-return-3='#=UnitPrice#' href='javascript:;;' class='k-button k-button-icon selectRow'><i class='fa fa-edit'></i> Select</a>").Width(100).Title("");
+            col.Bound(m => m.Code).Title("Product Code");
+            col.Bound(m => m.Name).Title("Product Name");
+            col.Bound(m => m.UnitPrice).Title("Unit Price").Format("{0:###,##0}").HtmlAttributes(new { style="text-align:right;" }).HeaderHtmlAttributes(new { style="text-align:right;" });
+    })
+    .Pageable()
+    .Filterable(filter => filter.Operators(op => op.ForString(f => f.Clear().Contains("Contains").StartsWith("Starts with"))))
+    .DataSource(ds => ds.Ajax().Read("ListBrowseProduct", "Browse", new { area = String.Empty, inventoryType = ViewBag.inventoryType, unitPriceMode = (int?)ViewBag.unitPriceMode }))
+    .Sortable(s => s.SortMode(GridSortMode.SingleColumn))
+)
+
+
+<script>
+    var browse = (function() {
+        return {
+            onSelectRow: function(e) {
+                e.preventDefault();
+                var that = this;
+                var callback = "@ViewBag.callback";
+                if (callback.length > 0) {
+                    var callbackArray = callback.split(";");
+                    $.each(callbackArray, function (index, el) {
+                        var domId = "#" + el;
+                        var value = $(that).attr("data-return-" + index);
+                        if ($(domId).data("kendoNumericTextBox") == undefined) {
+                            $(domId).val(value);
+                        } else {
+                            $(domId).data("kendoNumericTextBox").value(value);
+                        }
+                    });
+                }
+                $("#windowBrowseProduct").data("kendoWindow").close();
+            }
+        }
+    })();
+
+    $(function() {
+        $("#gridBrowse").on("click", ".selectRow", browse.onSelectRow);
+    });
+</script>

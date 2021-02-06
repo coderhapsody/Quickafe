@@ -1,0 +1,46 @@
+﻿@model Quickafe.Providers.Sales.ViewModels.Order.DetailViewModel
+@{
+    var mode = Convert.ToString(ViewBag.mode);
+    var referrer = Request.UrlReferrer != null ? Request.UrlReferrer.AbsolutePath : Url.Action("Index", "Home", new { area = String.Empty });
+}
+
+<div class="page-title">Order Detail</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addEditForm", name = "addEditForm" }))
+{
+    @Html.Partial("_OrderDetail", Model)
+    <div class="row">
+        <div class="col-md-8 col-lg-offset-4">
+            <button class="k-button" id="btnPrint" data-id="@Model.Id"><i class="fa fa-print"></i> Print for Customer</button>
+            <button class="k-button" id="btnPrintKitchen" data-id="@Model.Id"><i class="fa fa-print"></i> Print for Kitchen</button>
+
+            @*<a class="k-button" id="btnBackToOrderList" href="@Url.Action("Index")">Back to Outstanding Order List</a>*@
+            @if (mode == "history" || mode == "void")
+            {
+                <button class="k-button" id="btnBack" data-referrer="@referrer"><i class="fa fa-undo"></i> Back to Order History</button>
+                if (mode == "history")
+                {
+                }
+                else if (mode == "void")
+                {
+                    <button class="k-button" id="btnVoid" data-id="@Model.Id"><i class="fa fa-eraser"></i> Void</button>
+                }
+            }
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script src="@Url.Content("~/Scripts/modules/sales/Order.js")"></script>
+    <script>
+        $("#btnBack").click(Order.back);
+        $("#btnPrint").click(Order.printOrder);
+        $("#btnPrintKitchen").click(Order.printKitchen);
+
+        @if(mode == "void")
+        {
+            <text>
+            $("#btnVoid").click(Order.voidOrder);
+            </text>
+        }
+    </script>
+}

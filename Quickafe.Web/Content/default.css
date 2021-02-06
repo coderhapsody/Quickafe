@@ -1,0 +1,122 @@
+﻿body {
+    padding-top: 45px;
+    color: black;
+    background-color: white !important;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+}
+
+.checkboxColumn {
+    text-align: center;
+    width: 10px;
+}
+
+.editColumn {
+    text-align: center;
+    width: 50px;
+}
+
+table .searchField {
+    width: 60px;
+}
+
+.borderless tbody tr td, .borderless thead tr th, .borderless td {
+    border: none;
+}
+
+.login-footer {
+    font-size: 80%;
+}
+
+.container-form {
+    margin-top: 20px;
+}
+
+.page-title {
+    font-size: 22px;
+    font-variant:small-caps; 
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+.field-title {
+    width: 150px;
+}
+
+.div-table {
+    display: table;
+    width: auto;
+    border-spacing: 5px; /*cellspacing:poor IE support for  this*/
+}
+
+.div-table-row {
+    display: table-row;
+    width: auto;
+    clear: both;
+}
+
+.div-table-col {
+    float: left; /*fix for  buggy browsers*/
+    display: table-column;
+    padding: 10px;
+}
+
+#grid tbody {
+    color: black;
+}
+
+    #grid tbody tr:hover {
+        /*background: #E2FFB6;*/
+    }
+
+a.k-button:focus {
+    color: white;
+}
+
+table a:not(.btn), .table a:not(.btn) {
+    text-decoration: none;
+}
+
+.navbar-nav > li > a, .navbar-brand {
+    padding-top: 8px !important;
+    padding-bottom: 0 !important;
+    height: 40px;
+}
+
+.navbar {
+    min-height: 40px !important;
+}
+
+.dropdown-menu {
+    font-size: 13px !important;
+}
+    
+#addEditWindow {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#paymentDetailWindow {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.serverinfo-header {
+    width: 150px;
+    font-weight: bold;
+}
+
+.gridInactiveData {
+    background-color: #fe7a7a;
+}
+
+.validation-summary-errors {
+    color: red;
+}

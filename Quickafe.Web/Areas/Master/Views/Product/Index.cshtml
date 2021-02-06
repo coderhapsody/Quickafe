@@ -1,0 +1,48 @@
+﻿@model Quickafe.Providers.ViewModels.Product.IndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<div class="page-title">Product</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            <p>
+                <a href="#" class="k-button k-button-icon" id="btnAddNew" data-createurl="@Url.Action("Create")"><span class="fa fa-plus"></span> Add New</a>
+                <a href="#" class="k-button k-button-icon" id="btnDelete" data-deleteurl="@Url.Action("Delete")"><span class="fa fa-remove"></span> Delete</a>
+            </p>
+            @(Html.Kendo().Grid(Model.List).Name("grid").HtmlAttributes(new { data_editurl=Url.Action("Edit") }).EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                  col.Template(@<text></text>).ClientTemplate(@"<input type='checkbox' id='chkDelete' name='chkDelete' value='#=Id#' />")
+                          .Width(30).HtmlAttributes(new { style = "text-align:center;" });
+                  col.Bound(m => m.Code).Title("Product Code");
+                  col.Bound(m => m.Name).Title("Product Name");
+                  col.Bound(m => m.ProductCategoryName).Title("Product Category");
+                  col.Bound(m => m.UnitPrice).Title("Unit Price").Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                  col.Bound(m => m.UnitPrice2).Title("Unit Price 2").Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                  col.Bound(m => m.UnitPrice3).Title("Unit Price 3").Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                  col.Bound(m => m.IsActive).Title("Active");
+                  col.Template(@<text></text>).ClientTemplate("<a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon editRow'><i class='fa fa-edit'></i></a>").Width(50).Title("");
+
+                  })
+                .Pageable()
+                .Groupable(config => config.ShowFooter(true))
+                .Mobile()
+                .Excel(xls => xls.AllPages(true))
+                .Filterable()
+                    .DataSource(ds => ds.Ajax().Read("List", "Product", new { area = "Master" }))
+                .Sortable(s => s.SortMode(GridSortMode.MultipleColumn))
+            )
+        }
+    </div>
+
+    <div id="addEditWindow"></div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/modules/master/product.js"></script>
+}
+

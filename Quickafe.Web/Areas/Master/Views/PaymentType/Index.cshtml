@@ -1,0 +1,43 @@
+﻿@model Quickafe.Providers.ViewModels.PaymentType.IndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="page-title">Payment Type</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            <p>
+                <a href="#" class="k-button k-button-icon" id="btnAddNew" data-createurl="@Url.Action("Create")"><span class="fa fa-plus"></span> Add New</a>
+                <a href="#" class="k-button k-button-icon" id="btnDelete" data-deleteurl="@Url.Action("Delete")"><span class="fa fa-remove"></span> Delete</a>
+            </p>
+            @(Html.Kendo().Grid(Model.List).Name("grid").HtmlAttributes(new { data_editurl=Url.Action("Edit") }).EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                  col.Template(@<text></text>).ClientTemplate(@"#if(!IsSystemDefault) { #<input type='checkbox' id='chkDelete' name='chkDelete' value='#=Id#' /># } #")
+                          .Width(30).HtmlAttributes(new { style = "text-align:center;" });
+                  col.Bound(m => m.Name).Title("Name");
+                  col.Bound(m => m.IsActive).Title("Active");
+                  col.Template(@<text></text>).ClientTemplate("#if(!IsSystemDefault) { #<a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon editRow'><i class='fa fa-edit'></i></a># } #").Width(50).Title("");
+
+                  })
+                .Pageable()
+                .Mobile()
+                .Excel(xls => xls.AllPages(true))
+                .Filterable()
+                    .DataSource(ds => ds.Ajax().Read("List", "PaymentType", new { area = "Master" }))
+                .Sortable(s => s.SortMode(GridSortMode.MultipleColumn))
+            )
+        }
+    </div>
+
+    <div id="addEditWindow"></div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/modules/master/PaymentType.js"></script>
+}
+

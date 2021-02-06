@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Quickafe.Providers.ViewModels.RoleAccess.ListMenuViewModel>
+
+<ul class="dropdown-menu" role="menu">
+    @foreach (var menu in Model)
+    {
+        <li><a href="@Url.Content(menu.Url)">@Html.Raw(!String.IsNullOrEmpty(menu.FAIcon) ? @"<i class='" + menu.FAIcon + @"'></i> " : "")  @menu.Name</a> </li>
+    }
+</ul>

@@ -1,0 +1,34 @@
+﻿@model Quickafe.Providers.ViewModels.LandingPageViewModel
+
+<div class="page-title">Welcome to @Model.StoreName </div>
+<div class="container-form">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table">
+                    @foreach (var serverInfo in Model.ServerInfo)
+                    {
+                    <tr>
+                        <td class="serverinfo-header">@serverInfo.Key: </td>
+                        <td>@serverInfo.Value</td>
+                    </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            @(Html.Kendo().Chart<Quickafe.Providers.ViewModels.Dashboard.MtdOrderVolumeViewModel>()
+                .Name("MtdOrderVolume")
+                .Title("MTD Order Volume")
+                .DataSource(ds => ds.Read("MtdOrderVolume", "Dashboard", new { area = String.Empty }))
+                .Series(s => s.Column(c => c.Volume))
+                .ValueAxis(axis => axis.Numeric().Labels(label => label.Format("{0:###,##0}")))
+                .CategoryAxis(axis => axis.Categories(m => m.MonthName)))
+
+        </div>
+    </div>
+</div>

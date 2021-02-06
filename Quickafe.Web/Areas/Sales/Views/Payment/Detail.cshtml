@@ -1,0 +1,42 @@
+﻿@model Quickafe.Providers.Sales.ViewModels.Payment.DetailViewModel
+@{
+    var mode = Convert.ToString(ViewBag.mode);
+    var referrer = Request.UrlReferrer != null ? Request.UrlReferrer.AbsolutePath : Url.Action("Index", "Home", new { area = String.Empty });
+}
+
+<div class="page-title">Payment Detail</div>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addEditForm", name = "addEditForm" }))
+{
+    @Html.Partial("_PaymentDetail", Model)
+    <div class="row">
+        <div class="col-md-8 col-lg-offset-4">
+            <button class="k-button" id="btnPrint" data-orderid="@Model.OrderId" data-id="@Model.Id"><i class="fa fa-print"></i> Print</button>
+            @if (mode == "history" || mode == "void")
+            {
+                <button class="k-button" id="btnBack" data-referrer="@referrer"><i class="fa fa-undo"></i> Back to Payment History</button>
+                if (mode == "history")
+                {
+                }
+                else if (mode == "void")
+                {
+                    <button class="k-button" id="btnVoid" data-id="@Model.Id"><i class="fa fa-eraser"></i> Void</button>
+                }
+            }
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script src="@Url.Content("~/Scripts/modules/sales/PaymentDetail.js")"></script>
+    <script>
+        $("#btnBack").click(PaymentDetail.back);
+        $("#btnPrint").click(PaymentDetail.printPayment);
+
+        @if(mode == "void")
+        {
+            <text>
+        $("#btnVoid").click(PaymentDetail.voidPayment);
+            </text>
+        }
+    </script>
+}

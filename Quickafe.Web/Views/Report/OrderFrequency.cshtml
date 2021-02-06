@@ -1,0 +1,40 @@
+﻿@{
+    var fromDate = (DateTime)ViewBag.FromDate;
+    var toDate = (DateTime)ViewBag.ToDate;
+}
+
+<div class="page-title">Order Frequency</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmReport", name = "frmReport" }))
+        {
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-2">From Date: </div>
+                    <div class="col-md-8">@Html.Kendo().DatePicker().Name("FromDate").Value(fromDate)</div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">To Date: </div>
+                    <div class="col-md-8">@Html.Kendo().DatePicker().Name("ToDate").Value(toDate)</div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-6"><button id="btnPrint" class="k-button"><i class="fa fa-print"></i> Print</button> </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $("#btnPrint").click(function (e) {
+            e.preventDefault();
+            var fromDate = moment($("#FromDate").getKendoDatePicker().value(),'MM/DD/YYYY');
+            var toDate = moment($("#ToDate").getKendoDatePicker().value(),'MM/DD/YYYY');
+            var reportPreviewUrl = "@Url.Content("~/Reports/ReportPreview.aspx")";
+            reportPreviewUrl += "?Report=OrderFrequency&FromOrderDate=" + fromDate.format("YYYY-MM-DD") + "&ToOrderDate=" + toDate.format("YYYY-MM-DD");
+            kendoPrint(reportPreviewUrl);
+        });
+    </script>
+}

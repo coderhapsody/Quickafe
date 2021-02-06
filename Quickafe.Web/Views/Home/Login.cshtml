@@ -1,0 +1,87 @@
+﻿@model Quickafe.ViewModels.LogInViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Quickafe Point of Sales</title>
+    <meta name="viewport" content="width=device-width" />
+    @Html.Partial("_References")
+</head>
+<body>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="modal-header text-center">
+                            <h3 class="page-title"><span class="fa fa-coffee"></span> Quickafe - Point of Sales</h3>
+                        </div>
+
+                        @Html.ValidationSummary()
+                        <table class="table borderless">
+                            <tr>
+                                <td>User Name</td>
+                                <td>:</td>
+                                <td>@Html.Kendo().TextBoxFor(m => m.UserName)</td>
+                            </tr>
+                            <tr>
+                                <td>Password</td>
+                                <td>:</td>
+                                <td>@Html.Kendo().TextBoxFor(m => m.Password).HtmlAttributes(new { type = "password" })</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><input type="submit" value="Log In" id="loginButton" name="loginButton" class="k-button" />  </td>
+                            </tr>
+
+                        </table>
+                    }
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <script type="text/javascript">
+        function centerModal() {
+            $(this).css('display', 'block');
+            var $dialog = $(this).find(".modal-dialog");
+            var offset = ($(window).height() - $dialog.height()) / 2;
+            // Center modal vertically in window
+            $dialog.css("margin-top", offset);
+        }
+
+        $('.modal').on('show.bs.modal', centerModal);
+        $(window).on("resize", function () {
+            $('.modal:visible').each(centerModal);
+        });
+
+        $('#myModal').on('hide.bs.modal', function (e) {
+            e.preventDefault();
+            //e.cancel();
+            return false;
+        });
+
+        $('.modal').on('shown.bs.modal', function () {
+            $("#UserName").focus();
+        });
+
+        $(window).load(function () {
+            $('#myModal').modal('show');
+
+        });
+
+    </script>
+
+</body>
+</html>

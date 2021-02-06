@@ -1,0 +1,22 @@
+﻿@using System.Web.Mvc.Html
+@functions {
+    public static System.Web.Mvc.HtmlHelper<object> Html = ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page).Html;
+    public static System.Web.Mvc.UrlHelper Url = ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page).Url;
+}
+
+@helper ServiceOperation(string createUrl = null, string editUrl = null, string deleteUrl = null, string domId = null)
+{
+    <input type="hidden" id="@(domId ?? "serviceUrl")"
+           data-editurl="@(editUrl ?? String.Empty)"
+           data-createurl="@(createUrl ?? String.Empty)"
+           data-deleteurl="@(deleteUrl ?? String.Empty)" />
+}
+
+@helper RenderAuditFields(Quickafe.Framework.Base.BaseViewModel model)
+{
+    @Html.Hidden("ChangedBy", model.ChangedBy)
+    @Html.Hidden("CreatedBy", model.ChangedBy)
+    @Html.Hidden("ChangedWhen", model.ChangedWhen)
+    @Html.Hidden("CreatedWhen", model.CreatedWhen)
+    @Html.Hidden("RowVersion", model.RowVersion)
+}

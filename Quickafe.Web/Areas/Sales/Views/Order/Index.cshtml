@@ -1,0 +1,50 @@
+﻿@model Quickafe.Providers.Sales.ViewModels.Order.IndexViewModel
+
+<div class="page-title">Outstanding Orders</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id="formOrder", name="formOrder" }))
+        {
+            @Html.ValidationSummary()
+            <p>
+                <a href="@Url.Action("Create")" class="k-button k-button-icon" id="btnAddNew" data-createurl="@Url.Action("Create")"><span class="fa fa-plus"></span> Add New</a>
+                @*<button type="submit" name="btnCreatePayment" class="k-button k-button-icon" id="btnCreatePayment"><span class="fa fa-money"></span> Create Payment</button>*@
+            </p>
+            @(Html.Kendo().Grid(Model.List)
+                .Name("grid")
+                .HtmlAttributes(new { data_editurl = Url.Action("Edit") })
+                .EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                  col.Template(@<text></text>).ClientTemplate(@"<input type='checkbox' name='chkSelect' value='#=Id#' />")
+                              .Width(30).HtmlAttributes(new { style = "text-align:center;" });
+                  col.Bound(m => m.OrderNo).Title("Order No.");
+                  col.Bound(m => m.OrderType).Title("Order Type");
+                  col.Bound(m => m.Date).Format("{0:dd/MM/yyyy}");
+                  col.Bound(m => m.OrderDetailCount).Title("Qty").HtmlAttributes(new { style="width:50px;" } );
+                  col.Bound(m => m.TableCode).Title("Table");
+                  col.Bound(m => m.Guests).Title("Guests");
+                  col.Template(@<text></text>).ClientTemplate(
+                          @"<a data-id='#=Id#' href='" + Url.Action("CreatePayment", "Payment", new { area = "Sales", orderId = "#=Id#" }) + "' class='k-button k-button-icon' title='Create Payment'><i class='fa fa-money'></i></a>"+
+                          @"<a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon printOrder' title='Print Order'><i class='fa fa-print'></i></a>" +
+                          @"<a data-id='#=Id#' href='javascript:;;' class='k-button k-button-icon voidOrder' data-voidurl='" + Url.Action("Void", new { id = "#=Id#" }) + "' title='Void Order'><i class='fa fa-trash'></i></a>" +
+                          @"<a data-id='#=Id#' href='" + Url.Action("Edit", new { id = "#=Id#" } ) + "' class='k-button k-button-icon editRow' title='Edit Order'><i class='fa fa-edit'></i></a>").Width(150).Title("");
+                  })
+                .Mobile()
+                .Pageable()
+                .Filterable()
+                    .DataSource(ds => ds.Ajax().Read("ListOutstandingOrders", "Order", new { area = "Sales" }))
+                .Sortable(s => s.SortMode(GridSortMode.MultipleColumn))
+            )
+
+            @Html.Hidden("DiscPercent")
+            @Html.Hidden("DiscValue")
+        }
+    </div>
+</div>
+
+<div id="voidAuthentication"></div>
+
+@section scripts{
+    <script src="~/Scripts/modules/sales/Order.js"></script>
+}

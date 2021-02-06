@@ -1,0 +1,39 @@
+﻿<div class="page-title">Daily Sales</div>
+<div class="row" id="viewModelWorkspace">
+    <div class="col-md-12">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id="frmReport", name="frmReport" }))
+        {
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-2">From Date: </div>
+                <div class="col-md-8">@Html.Kendo().DatePicker().Name("FromDate").Value(DateTime.Today).HtmlAttributes(new { required = "required" })</div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">To Date: </div>
+                <div class="col-md-8">@Html.Kendo().DatePicker().Name("ToDate").Value(DateTime.Today).HtmlAttributes(new { required = "required" })</div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-6"><button id="btnPrint" class="k-button"><i class="fa fa-print"></i> Print</button> </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+<script>
+    var validationOptions = {};
+    $("#btnPrint").click(function (e) {
+        e.preventDefault();
+        var validator = $("#frmReport").kendoValidator(validationOptions).data("kendoValidator");
+        if (validator.validate()) {
+            var fromDate = kendo.toString($("#FromDate").getKendoDatePicker().value(),"yyyy-MM-dd");
+            var toDate = kendo.toString($("#ToDate").getKendoDatePicker().value(), "yyyy-MM-dd");
+            var reportPreviewUrl = $("#reportUrl").val();
+            reportPreviewUrl += "?Report=DailySales&FromDate=" + fromDate + "&ToDate=" + toDate;
+            kendoPrint(reportPreviewUrl);
+        }
+    });
+</script>
+}

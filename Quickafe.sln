@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickafe.Web", "Quickafe.Web\Quickafe.Web.csproj", "{8B031DF6-B285-4AC4-A057-C2AD1EA17D48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickafe.DataAccess", "Quickafe.DataAccess\Quickafe.DataAccess.csproj", "{009FFF6F-B29B-4508-8ED7-004A0D98C463}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickafe.Providers.Sales", "Quickafe.Providers.Sales\Quickafe.Providers.Sales.csproj", "{FA9E95EB-A10A-43A2-BB92-EC34CC6820B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickafe.Providers.Inventory", "Quickafe.Providers.Inventory\Quickafe.Providers.Inventory.csproj", "{B1250A51-0DAB-43A6-A598-387BB9E745D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickafe.Providers", "Quickafe.Providers\Quickafe.Providers.csproj", "{30DB7192-0617-4089-9FEB-D30ABF42EA55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickafe.Framework", "Quickafe.Framework\Quickafe.Framework.csproj", "{04967B81-6587-48E9-BFA3-D548F0628DFF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Application", "3 - Application", "{D5E09AEE-64BD-4DC1-81A4-27C10EBB2BEA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Data Access", "1 - Data Access", "{FE41447A-790E-469D-B591-C2D15F21164C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Business Logic", "2 - Business Logic", "{D9559663-8C15-4988-916C-0F37850214FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Framework", "0 - Framework", "{53B0540D-5C51-4596-A9E7-80618D551F4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC9F80CC-5E08-472D-9454-085E714818DD}"
+	ProjectSection(SolutionItems) = preProject
+		SharedAssemblyVersion.cs = SharedAssemblyVersion.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickafe.Resources", "Quickafe.Resources\Quickafe.Resources.csproj", "{FF5B2943-BE39-4B07-865C-DE3864D784BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B031DF6-B285-4AC4-A057-C2AD1EA17D48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B031DF6-B285-4AC4-A057-C2AD1EA17D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B031DF6-B285-4AC4-A057-C2AD1EA17D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B031DF6-B285-4AC4-A057-C2AD1EA17D48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{009FFF6F-B29B-4508-8ED7-004A0D98C463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{009FFF6F-B29B-4508-8ED7-004A0D98C463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{009FFF6F-B29B-4508-8ED7-004A0D98C463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{009FFF6F-B29B-4508-8ED7-004A0D98C463}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9E95EB-A10A-43A2-BB92-EC34CC6820B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9E95EB-A10A-43A2-BB92-EC34CC6820B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9E95EB-A10A-43A2-BB92-EC34CC6820B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9E95EB-A10A-43A2-BB92-EC34CC6820B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1250A51-0DAB-43A6-A598-387BB9E745D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1250A51-0DAB-43A6-A598-387BB9E745D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1250A51-0DAB-43A6-A598-387BB9E745D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1250A51-0DAB-43A6-A598-387BB9E745D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30DB7192-0617-4089-9FEB-D30ABF42EA55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30DB7192-0617-4089-9FEB-D30ABF42EA55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30DB7192-0617-4089-9FEB-D30ABF42EA55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30DB7192-0617-4089-9FEB-D30ABF42EA55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04967B81-6587-48E9-BFA3-D548F0628DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04967B81-6587-48E9-BFA3-D548F0628DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04967B81-6587-48E9-BFA3-D548F0628DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04967B81-6587-48E9-BFA3-D548F0628DFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF5B2943-BE39-4B07-865C-DE3864D784BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF5B2943-BE39-4B07-865C-DE3864D784BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF5B2943-BE39-4B07-865C-DE3864D784BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF5B2943-BE39-4B07-865C-DE3864D784BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8B031DF6-B285-4AC4-A057-C2AD1EA17D48} = {D5E09AEE-64BD-4DC1-81A4-27C10EBB2BEA}
+		{009FFF6F-B29B-4508-8ED7-004A0D98C463} = {FE41447A-790E-469D-B591-C2D15F21164C}
+		{FA9E95EB-A10A-43A2-BB92-EC34CC6820B4} = {D9559663-8C15-4988-916C-0F37850214FD}
+		{B1250A51-0DAB-43A6-A598-387BB9E745D5} = {D9559663-8C15-4988-916C-0F37850214FD}
+		{30DB7192-0617-4089-9FEB-D30ABF42EA55} = {D9559663-8C15-4988-916C-0F37850214FD}
+		{04967B81-6587-48E9-BFA3-D548F0628DFF} = {53B0540D-5C51-4596-A9E7-80618D551F4D}
+		{FF5B2943-BE39-4B07-865C-DE3864D784BA} = {FE41447A-790E-469D-B591-C2D15F21164C}
+	EndGlobalSection
+EndGlobal

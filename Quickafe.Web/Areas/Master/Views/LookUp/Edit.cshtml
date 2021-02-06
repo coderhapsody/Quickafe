@@ -1,0 +1,21 @@
+﻿@{ 
+    var values = ViewBag.values as string;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("lookUpName", Request.QueryString["name"])
+<div class="page-title">Look Up Values</div>
+<div class="row">
+    <div class="col-md-1">Values:</div>
+    <div class="col-md-11">
+        @Html.TextArea("lookUpValues", values, new { style = "width: 40%; height: 200px;", @class = "k-textbox" })
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-11 col-md-offset-1">
+        <button type="submit" id="btnSave" name="btnSave" class="k-button">Save</button>
+    </div>
+</div>
+}

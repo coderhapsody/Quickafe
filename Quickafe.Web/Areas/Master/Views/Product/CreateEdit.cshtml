@@ -1,0 +1,89 @@
+﻿@model Quickafe.Providers.ViewModels.Product.CreateEditViewModel
+
+<div style="width: 550px;">
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addEditForm", name = "addEditForm" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @FormHelper.RenderAuditFields(Model)
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.Code): </div>
+                <div class="col-md-7">
+                    @Html.Kendo().TextBoxFor(m => m.Code).HtmlAttributes(new { style = "width:150px;", maxlength="10" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.Name): </div>
+                <div class="col-md-7">
+                    @Html.Kendo().TextBoxFor(m => m.Name).HtmlAttributes(new { style = "width:400px;", maxlength="50" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.ProductCategoryId): </div>
+                <div class="col-md-3">
+                    @(Html.Kendo().DropDownListFor(m => m.ProductCategoryId)
+                                .DataSource(ds => ds.Read("GetProductCategories", "Product", new { area = "Master" }))
+                                .DataTextField("Name")
+                                .DataValueField("Id")
+                                .OptionLabel("Select Product Category")
+                    )
+                </div>&nbsp;<div class="col-md-4">
+                    @(Html.Kendo().DropDownListFor(m => m.YieldProductId)
+                                .DataSource(ds => ds.Read(read => read.Action("GetYieldProducts", "Product", new { area = "Master" }).Data("Product.filterProductCategory")).ServerFiltering(true))
+                                .DataTextField("Name")
+                                .CascadeFrom("ProductCategoryId")
+                                .DataValueField("Id")
+                                .OptionLabel("Select")
+                                .Enable(false)
+                                .AutoBind(false)
+                                .HtmlAttributes(new { style="width:220px;"})
+                                )
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.UnitPrice): </div>
+                <div class="col-md-7">
+                    @Html.Kendo().NumericTextBoxFor(m => m.UnitPrice).Culture("id-ID").Format("#").Decimals(0).Min(0).Step(500).HtmlAttributes(new { style = "width:120px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.UnitPrice2): </div>
+                <div class="col-md-7">
+                    @Html.Kendo().NumericTextBoxFor(m => m.UnitPrice2).Culture("id-ID").Format("#").Decimals(0).Min(0).Step(500).HtmlAttributes(new { style = "width:120px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">@Html.LabelFor(m => m.UnitPrice3): </div>
+                <div class="col-md-7">
+                    @Html.Kendo().NumericTextBoxFor(m => m.UnitPrice3).Culture("id-ID").Format("#").Decimals(0).Min(0).Step(500).HtmlAttributes(new { style = "width:120px;" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-7">
+                    @Html.Kendo().CheckBoxFor(m => m.IsActive)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3"></div>
+                <div class="col-md-7">
+                    <button type="submit" id="btnSave" name="btnSave" class="k-button">@Strings.SaveButtonText</button>
+                    <button type="button" id="btnClose" name="btnClose" class="k-button">@Strings.CloseButtonText</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(function () {
+        $("#btnClose").click(Product.closeClick);
+        $("#btnSave").click(Product.saveClick);
+        $("#Code").focusEnd();
+    });
+</script>

@@ -1,0 +1,131 @@
+﻿@model Quickafe.Providers.Sales.ViewModels.Payment.DetailViewModel
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "detailForm", name = "detailForm" }))
+{
+    <div class="row">
+        @Html.HiddenFor(m => m.Id)
+        <div class="col-md-4">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.PaymentNo)</div>
+                    <div class="col-md-7">@Model.PaymentNo</div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.PaymentDate)</div>
+                    <div class="col-md-7">@Model.PaymentDate.ToString("dddd, dd MMMM yyyy")</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.OrderNo)</div>
+                    <div class="col-md-7">@Model.OrderNo</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.OrderDate)</div>
+                    <div class="col-md-7">@Model.OrderDate.ToString("dddd, dd MMMM yyyy")</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.OrderType)</div>
+                    <div class="col-md-7">@Model.OrderType</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.UnitPriceMode)</div>
+                    <div class="col-md-7">@Model.UnitPriceMode</div>
+                </div>
+
+                @*<div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.BillableAmount)</div>
+                    <div class="col-md-7">@Model.BillableAmount.ToString("###,##0.00")</div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-5">@Html.LabelFor(m => m.PaidAmount)</div>
+                    <div class="col-md-7">@Model.PaidAmount.ToString("###,##0.00")</div>
+                </div>*@
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-sm-12">
+                    @(Html.Kendo().Grid(Model.OrderDetails).Name("grid").Columns(
+        col =>
+        {
+            col.Bound(m => m.ProductCode).Title("Product Code");
+            col.Bound(m => m.ProductName).Title("Product Name");
+            col.Bound(m => m.ProductCategoryName).Title("Product Category");
+            col.Bound(m => m.Qty).Title("Qty").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" })
+            .FooterTemplate(t => t.Sum.Format("{0:###,##0}")).FooterHtmlAttributes(new { style = "text-align:right;" });
+            col.Bound(m => m.UnitPrice).Title("Unit Price").Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+            col.Bound(m => m.DetailDiscPercent).Title("Disc. %").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+            col.Bound(m => m.DetailDiscValue).HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+
+            col.Bound(m => m.Total).Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" })
+            .FooterTemplate(t => t.Sum.Format("{0:###,##0}")).FooterHtmlAttributes(new { style = "text-align:right;" });
+        })
+    .Mobile()
+    .DataSource(ds => ds.Server().Aggregates(aggr =>
+    {
+        aggr.Add(p => p.Qty).Sum();
+        aggr.Add(p => p.Total).Sum();
+    })))
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-3 text-right">@Html.LabelFor(m => m.TotalOrder)</div>
+                        <div class="col-sm-2 text-right">@Model.TotalOrder.ToString("###,##0") </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 text-right">@Html.LabelFor(m => m.TaxValue)</div>
+                        <div class="col-sm-2 text-right">@Model.TaxValue.ToString("###,##0")</div>
+                    </div>
+                    @*<div class="row">
+                        <div class="col-sm-3 text-right">@Html.LabelFor(m => m.ServiceCharge)</div>
+                        <div class="col-sm-2 text-right">@Model.ServiceCharge.ToString("###,##0")</div>
+                    </div>*@
+                    <div class="row">
+                        <div class="col-sm-3 text-right">@Html.LabelFor(m => m.DeliveryCharge)</div>
+                        <div class="col-sm-2 text-right">@Model.DeliveryCharge.ToString("###,##0")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 text-right">@Html.LabelFor(m => m.DiscValue)</div>
+                        <div class="col-sm-2 text-right">@Model.DiscValue.ToString("###,##0")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 text-right">@Html.LabelFor(m => m.BillableAmount)</div>
+                        <div class="col-sm-2 text-right">@Model.BillableAmount.ToString("###,##0")</div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm-12">
+                    @(Html.Kendo().Grid(Model.List).Name("grid").Columns(
+                    col =>
+                    {
+                        col.Bound(m => m.PaymentTypeName).Title("Payment Type");
+                        col.Bound(m => m.Amount).Title("Payment Amount").Format("{0:###,##0.00}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                        col.Bound(m => m.CardNo).Title("Card No.");
+                        col.Bound(m => m.Notes).Title("Notes");
+                    })
+                    .Mobile()
+                    .DataSource(ds => ds.Server())
+                    )
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-3 text-right">@Html.LabelFor(m => m.TotalPayment)</div>
+                        <div class="col-sm-2 text-right">@Model.TotalPayment.ToString("###,##0") </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br/><br/>
+}

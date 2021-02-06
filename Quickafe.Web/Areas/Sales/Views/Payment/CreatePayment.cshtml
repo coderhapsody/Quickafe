@@ -1,0 +1,107 @@
+﻿@model Quickafe.Providers.Sales.ViewModels.Payment.CreatePaymentViewModel
+
+
+<div class="page-title">Create Payment</div>
+<div class="row">
+    <div class="col-md-7">
+        @(Html.Kendo().Grid(Model.OrderDetails)
+                .Name("gridOrder")
+                .Columns(
+                  col =>
+                  {
+                      col.Bound(m => m.ProductCode);
+                      col.Bound(m => m.ProductName);
+                      col.Bound(m => m.Quantity).Title("Qty").Width(50).HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                      col.Bound(m => m.UnitPrice).Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                      col.Bound(m => m.DiscPercent).Format("{0:###,##0}").Width(50).Title("Disc. %").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                      col.Bound(m => m.DiscValue).Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                      col.Bound(m => m.Total).Format("{0:###,##0}").HtmlAttributes(new { style="text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" } );
+                  })
+                .Mobile()
+                .DataSource(ds => ds.Server().Group(g => g.Add(c => c.ProductCategory)))
+        )
+    </div>
+
+    <div class="col-md-5">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "createPaymentForm", name = "createPaymentForm" }))
+        {
+            @Html.Hidden("OrderId", Request.QueryString["orderId"])
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-4">@Html.LabelFor(m => m.TotalOrders)</div>
+                                    <div class="col-sm-4 text-right">@Model.TotalOrders.ToString("###,##0") </div>
+                                </div>
+                                @*<div class="form-group">
+                                    <div class="col-sm-4">@Html.LabelFor(m => m.ServiceChargeValue)</div>
+                                    <div class="col-sm-4 text-right">@Model.ServiceChargeValue.ToString("###,##0")</div>
+                                </div>*@
+                                <div class="form-group">
+                                    <div class="col-sm-4">@Html.LabelFor(m => m.DiscPercent) @Model.DiscPercent %</div>
+                                    <div class="col-sm-4 text-right">@Model.DiscValue.ToString("###,##0")</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4">@Html.LabelFor(m => m.TaxValue)</div>
+                                    <div class="col-sm-4 text-right">@Model.TaxValue.ToString("###,##0")</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-4">@Html.LabelFor(m => m.DeliveryCharge)</div>
+                                    <div class="col-sm-4 text-right">@Model.DeliveryCharge.ToString("###,##0")</div>                                    
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4">@Html.LabelFor(m => m.BillableAmount)</div>
+                                    <div class="col-sm-4 text-right">@Model.BillableAmount.ToString("###,##0")</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p>
+                        <a href="#" class="k-button k-button-icon" id="btnAddNew" data-createurl="@Url.Action("AddDetail")"><span class="fa fa-plus"></span> Add New</a>
+                        <a href="#" class="k-button k-button-icon" id="btnDelete" data-deleteurl="@Url.Action("DeleteDetail")"><span class="fa fa-remove"></span> Delete</a>
+                    </p>
+                    @(Html.Kendo().Grid(Model.PaymentDetails).Name("gridPayment").HtmlAttributes(new { data_editurl = Url.Action("EditDetail") }).EnableCustomBinding(true).Columns(
+                  col =>
+                  {
+                  col.Template(@<text></text>).ClientTemplate(@"<input type='checkbox' name='chkDelete' value='#=Uid#' />")
+                                  .Width(30).HtmlAttributes(new { style = "text-align:center;" });
+                  col.Bound(m => m.PaymentTypeName).Title("Payment Type");
+                  col.Bound(m => m.Amount).Format("{0:###,##0}").HtmlAttributes(new { style = "text-align:right;" }).HeaderHtmlAttributes(new { style = "text-align:right;" });
+                  col.Bound(m => m.CardNo);
+                  col.Bound(m => m.Notes);
+                  col.Template(@<text></text>).ClientTemplate("<a data-id='#=Uid#' href='javascript:;;' class='k-button k-button-icon editRow'><i class='fa fa-edit'></i></a>").Width(50).Title("");
+                  })
+                .Mobile()
+                .DataSource(ds => ds.Ajax().Read("ListPaymentDetail", "Payment", new { area = "Sales" }))
+                .Events(ev => ev.DataBound("Payment.gridPaymentDataBound"))
+                .Sortable(s => s.SortMode(GridSortMode.MultipleColumn))
+                    )
+                    <p>
+                        Total Payment: <span id="totalPayment">0</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="label label-danger">@TempData["message"]</div>
+
+            <div class="row">
+                <div class="col-sm-12">  
+                    <button type="submit" name="btnConfirmPayment" id="btnConfirmPayment" class="k-button"><i class="fa fa-check"></i> Confirm Payment</button>
+                    <button type="submit" name="btnCancelPayment" id="btnCancelPayment" class="k-button">Cancel Payment Creation</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@Html.Hidden("TotalPaymentUrl", Url.Action("GetTotalPayment"))
+<div class="applyDiscWindow"></div>
+<div id="paymentDetailWindow"></div>
+
+<script src="@Url.Content("~/Scripts/modules/sales/Payment.js")"></script>
